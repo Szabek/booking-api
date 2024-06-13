@@ -33,7 +33,7 @@ class ReservationService
             (new DateTime($endDate))->modify('+1 day')
         );
 
-        $totalDays = iterator_count($period) - 1;
+        $totalDays = iterator_count($period);
 
         if ($availabilities->count() !== $totalDays) {
             throw new Exception('Not enough vacancies for the selected period.');
