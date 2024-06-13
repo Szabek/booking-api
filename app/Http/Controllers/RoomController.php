@@ -7,12 +7,20 @@ use App\Http\Requests\UpdateRoomRequest;
 use App\Http\Resources\RoomResource;
 use App\Models\AccommodationObject;
 use App\Models\Room;
+use App\Services\AvailabilityService;
 use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
 
 class RoomController extends Controller
 {
     use ApiResponse;
+
+    protected AvailabilityService $availabilityService;
+
+    public function __construct(AvailabilityService $availabilityService)
+    {
+        $this->availabilityService = $availabilityService;
+    }
 
     public function index($accommodationObjectId): JsonResponse
     {
@@ -33,6 +41,8 @@ class RoomController extends Controller
             'base_price' => $data['basePrice'],
             'accommodation_object_id' => $accommodationObjectId,
         ]);
+
+        $this->availabilityService->createAvailabilities($room, $data['availabilityStartDate'], $data['availabilityEndDate'], $data['basePrice']);
 
         return $this->success(new RoomResource($room), 'Room created successfully', 201);
     }

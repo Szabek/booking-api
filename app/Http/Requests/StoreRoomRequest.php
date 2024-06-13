@@ -30,6 +30,8 @@ class StoreRoomRequest extends FormRequest
             'description' => 'nullable|string',
             'capacity' => 'required|integer',
             'basePrice' => 'required|numeric',
+            'availabilityStartDate' => 'required|date',
+            'availabilityEndDate' => 'required|date|after_or_equal:availabilityStartDate',
         ];
     }
 }
